@@ -1,4 +1,3 @@
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
 
@@ -205,7 +204,7 @@ border-radius:4px;font-family:var(--mono);font-size:10px;color:var(--text3);
   <div class="sticky-title">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
     OS Answer Key
-    <span class="count-badge" id="sticky-count">150 Q</span>
+    <span class="count-badge" id="sticky-count">0 Q</span>
   </div>
   <div class="sticky-actions">
     <button class="btn" onclick="revealAll()">Reveal All</button>
@@ -219,9 +218,9 @@ border-radius:4px;font-family:var(--mono);font-size:10px;color:var(--text3);
   <div class="hero-inner">
     <div class="badge"><span class="dot"></span>OPERATING SYSTEMS — EXAM PREP</div>
     <h1>Complete<br><em>Answer Key</em></h1>
-    <p class="subtitle">150 questions covering scheduling, memory, IPC, deadlock, and more</p>
+    <p class="subtitle" id="subtitle-text">Questions covering scheduling, memory, IPC, deadlock, and more</p>
     <div class="stats-row">
-      <div class="stat"><div class="stat-num">150</div><div class="stat-label">Questions</div></div>
+      <div class="stat"><div class="stat-num" id="total-q-count">0</div><div class="stat-label">Questions</div></div>
       <div class="stat"><div class="stat-num" id="hero-revealed">0</div><div class="stat-label">Revealed</div></div>
       <div class="stat"><div class="stat-num">12</div><div class="stat-label">Topics</div></div>
     </div>
@@ -241,7 +240,7 @@ border-radius:4px;font-family:var(--mono);font-size:10px;color:var(--text3);
 <div class="controls">
   <div class="search-wrap">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="search" placeholder="Search questions, answers, topics..." oninput="filter()">
+    <input type="text" id="search" placeholder="Search questions, answers, topics...">
   </div>
   <div class="filters" id="chips"></div>
   <div class="view-toggle">
@@ -255,7 +254,7 @@ border-radius:4px;font-family:var(--mono);font-size:10px;color:var(--text3);
 </div>
 
 <div class="result-bar">
-  <span id="result-text">Showing 150 of 150 questions</span>
+  <span id="result-text">Showing 0 of 0 questions</span>
   <span><span class="kbd">click</span> a card to reveal answer</span>
 </div>
 
@@ -448,6 +447,10 @@ let activeTopics=new Set();
 let viewMode='grid';
 let searchTerm='';
 
+// Dynamically set total question counts
+document.getElementById('total-q-count').textContent = data.length;
+document.getElementById('subtitle-text').textContent = `${data.length} questions covering scheduling, memory, IPC, deadlock, and more`;
+
 function buildChips(){
   const topicSet=[...new Set(data.map(d=>d.topic))].sort();
   const el=document.getElementById('chips');
@@ -481,11 +484,11 @@ function render(){
   const empty=document.getElementById('empty');
   const total=data.filter(d=>d.revealed).length;
 
-  document.getElementById('result-text').textContent=`Showing ${filtered.length} of 150 questions`;
+  document.getElementById('result-text').textContent=`Showing ${filtered.length} of ${data.length} questions`;
   document.getElementById('sticky-count').textContent=filtered.length+' Q';
   document.getElementById('hero-revealed').textContent=total;
 
-  const pct=Math.round(total/150*100);
+  const pct=Math.round(total/data.length*100);
   document.getElementById('prog-pct').textContent=pct+'%';
   const circ=125.66;
   document.getElementById('prog-ring').style.strokeDashoffset=circ-(circ*pct/100);
@@ -547,7 +550,8 @@ function randomQuiz(){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   searchTerm='';document.getElementById('search').value='';
   render();
-  sendPrompt('Start a quiz with me on OS topics — ask me questions one by one and check my answers');
+  // Fixed the undefined function error
+  alert('ക്വിസ് മോഡ് ആക്ടിവേറ്റ് ചെയ്തു! (നിങ്ങളുടെ ക്വിസ് ലോജിക് ഇവിടെ ചേർക്കാം)');
 }
 
 document.getElementById('search').addEventListener('input',e=>{
